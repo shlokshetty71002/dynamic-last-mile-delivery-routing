@@ -46,6 +46,10 @@
 
 ## Evidence limitations
 
+- The Streamlit **feasible saving demonstration** is deliberately selection-conditioned: it
+  searches closures on the chosen baseline route, rejects disconnected candidates, and retains
+  only a complete positive-saving comparison. It explains T1/T2/T3 clearly, but its saving must
+  not be pooled with the unbiased committed/random experiment results.
 - Deterministic CI uses a hand-built directed fixture so it cannot validate current OSM counts or
   visual plausibility. The separate manual live-network workflow records that external evidence.
 - Runtime numbers vary with hardware, cache warmth, OSM graph size, and process concurrency.

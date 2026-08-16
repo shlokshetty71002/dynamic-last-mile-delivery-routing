@@ -13,6 +13,7 @@ def initialise_state(state: Any, *, builder: Any) -> None:
         "scenario": None,
         "result": None,
         "last_error": None,
+        "demo_candidates_evaluated": None,
     }
     for key, value in defaults.items():
         if key not in state:
@@ -24,3 +25,4 @@ def reset_run_state(state: Any) -> None:
 
     state["result"] = None
     state["last_error"] = None
+    state["demo_candidates_evaluated"] = None

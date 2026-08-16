@@ -90,3 +90,4 @@ def test_streamlit_client_contains_no_solver_or_graph_algorithm_calls() -> None:
     assert not any(token in app_source for token in forbidden)
     assert "compare_delivery(" in app_source
     assert "from state import initialise_state, reset_run_state" in app_source
+    assert "Generate feasible saving demonstration" in app_source

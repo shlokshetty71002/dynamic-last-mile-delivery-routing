@@ -113,6 +113,10 @@ result fields.
   always produces a new graph plus an audit record; the cached base graph is never mutated.
 - The Streamlit/Folium app is a thin client. Routing and modelling logic lives only in `src/dlm/`
   and the parity tests call the same workflows as the CLI.
+- The app's recommended demonstration mode searches baseline-route closures, rejects every
+  disconnected candidate, and displays only a complete positive-saving case. It is explicitly
+  labelled selection-conditioned and excluded from unbiased batch inference; research/stress
+  scenarios still retain neutral and infeasible outcomes honestly.
 
 The fixed 180-second service time, 8.5 L/100 km diesel use, and €1.75/L fuel price are explicit,
 configurable modelling assumptions—not observations. The direct diesel factor is 2.68 kg CO₂/L,

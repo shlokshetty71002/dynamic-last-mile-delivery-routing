@@ -10,6 +10,7 @@ import networkx as nx
 from dlm.disruption.schema import Disruption, DisruptionType, Scenario
 from dlm.instance.schema import DeliveryInstance
 from dlm.simulation import Experiment, InformationModel, SustainabilityAssumptions
+from dlm.workflows import find_feasible_saving_demo
 
 
 def closure(name: str, *edges: tuple[int, int, int]) -> Scenario:
@@ -56,6 +57,19 @@ def test_closure_makes_frozen_route_worse_and_replan_no_regret(
     assert result.saving_percent is not None and result.saving_percent > 0
     assert result.detours >= 1
     assert result.replans == 1
+
+    selected = find_feasible_saving_demo(
+        road_graph,
+        delivery_instance,
+        target_saving_percent=1.0,
+        max_route_edges=8,
+    )
+    assert selected.result.status.value == "complete"
+    assert selected.result.t2_s is not None and selected.result.t3_s is not None
+    assert selected.result.t3_s < selected.result.t2_s
+    assert selected.result.saving_percent is not None
+    assert selected.result.saving_percent > 0
+    assert "not an unbiased estimate" in selected.scenario.source
 
 
 def test_reactive_is_not_cheaper_than_omniscient_frozen_execution(

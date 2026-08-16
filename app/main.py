@@ -24,7 +24,12 @@ from dlm.instance.schema import DeliveryInstance, LocationSource
 from dlm.network.loader import build_or_load_network
 from dlm.simulation import InformationModel
 from dlm.viz import case_comparison_figure, comparison_map, instance_map
-from dlm.workflows import compare_delivery, comparison_configuration
+from dlm.workflows import (
+    DemoScenarioNotFoundError,
+    compare_delivery,
+    comparison_configuration,
+    find_feasible_saving_demo,
+)
 
 st.set_page_config(page_title="Dublin Last-Mile Routing", layout="wide")
 st.title("Disruption-Aware Dublin Last-Mile Routing")
@@ -189,15 +194,42 @@ with load_col:
             st.error(str(exc))
 
 st.header("Step 2 — Add a disruption")
+st.subheader("Recommended demonstration: complete route with positive saving")
+st.caption(
+    "Deterministically searches baseline-route closures, rejects disconnected cases, and keeps "
+    "only a complete result where T3 improves on T2. This selection-conditioned demo is kept "
+    "separate from unbiased batch inference."
+)
+if st.button(
+    "Generate feasible saving demonstration",
+    type="primary",
+    disabled=builder.depot is None or len(builder.stops) < 3,
+):
+    try:
+        with st.spinner("Searching feasible route-impacting candidates for a positive saving…"):
+            selection = find_feasible_saving_demo(
+                graph,
+                builder.build(),
+                matrix_cache_dir=settings.resolved_cache_dir,
+            )
+            st.session_state.scenario = selection.scenario
+            st.session_state.result = selection.result
+            st.session_state.demo_candidates_evaluated = selection.candidates_evaluated
+        st.rerun()
+    except DemoScenarioNotFoundError as exc:
+        st.warning(str(exc))
+    except Exception as exc:
+        st.error(str(exc))
+
 scenario_paths = sorted(Path("scenarios").glob("*.yaml"))
 scenario_choice = st.selectbox(
-    "Load a committed Dublin scenario",
+    "Research/stress scenarios (may be neutral or infeasible)",
     ["Choose…", *(str(path) for path in scenario_paths)],
 )
 if st.button("Load selected scenario", disabled=scenario_choice == "Choose…"):
     try:
         st.session_state.scenario = Scenario.load(scenario_choice)
-        st.session_state.result = None
+        reset_run_state(st.session_state)
         st.rerun()
     except Exception as exc:
         st.error(str(exc))
@@ -245,7 +277,7 @@ if st.button("Use most recent drawing", disabled=not drawings):
             disruption_type=draw_type,
             factor=slow_factor,
         )
-        st.session_state.result = None
+        reset_run_state(st.session_state)
         st.rerun()
     except Exception as exc:
         st.error(str(exc))
@@ -278,6 +310,7 @@ if st.button(
     try:
         with st.spinner("Solving T1, executing T2, and re-optimising T3…"):
             active_instance = builder.build()
+            st.session_state.demo_candidates_evaluated = None
             st.session_state.result = compare_delivery(
                 graph,
                 active_instance,
@@ -291,6 +324,18 @@ if st.button(
 
 result = st.session_state.result
 if result is not None and active_scenario is not None:
+    evaluated = st.session_state.demo_candidates_evaluated
+    if active_scenario.name.startswith("feasible_saving_demo_") and evaluated is not None:
+        st.success(
+            "Complete positive-saving demonstration selected after "
+            f"{evaluated} feasible candidate(s). It is selection-conditioned and excluded "
+            "from unbiased batch conclusions."
+        )
+    elif result.status.value != "complete":
+        st.warning(
+            f"Stress-test outcome: {result.status.value}. Served {result.stops_served} of "
+            f"{result.n_stops} stops; missed: {', '.join(result.stops_missed) or 'none'}."
+        )
     metric_columns = st.columns(4)
     metric_columns[0].metric("T1 planned", f"{result.t1_s:.1f} s")
     metric_columns[1].metric(
