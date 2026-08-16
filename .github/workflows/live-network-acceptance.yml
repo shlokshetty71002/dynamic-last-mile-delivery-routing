@@ -2,6 +2,9 @@ name: Live M50 network acceptance
 
 on:
   workflow_dispatch:
+  # Temporary feature-branch trigger; removed after evidence is collected.
+  push:
+    branches: [agent/full-routing-pipeline]
 
 permissions:
   contents: read
