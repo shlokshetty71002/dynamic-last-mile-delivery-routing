@@ -11,6 +11,7 @@ from dlm.instance.matrix import build_matrix, points_from_instance
 from dlm.instance.schema import DeliveryInstance
 from dlm.network.snapping import snap_to_node
 from dlm.simulation import Experiment, ExperimentResult, InformationModel
+from dlm.simulation.metrics import SustainabilityAssumptions
 from dlm.solver import Solution, default_solver
 
 
@@ -49,6 +50,32 @@ def compare_delivery(
         information_model=information_model,
         matrix_cache_dir=matrix_cache_dir,
     ).run()
+
+
+def comparison_configuration(
+    graph: nx.MultiDiGraph,
+    instance: DeliveryInstance,
+    scenario: Scenario,
+    result: ExperimentResult,
+    *,
+    information_model: InformationModel = InformationModel.REACTIVE,
+) -> dict[str, object]:
+    """Return the complete deterministic configuration needed to replay a comparison."""
+
+    resolved = resolve_instance(graph, instance)
+    return {
+        "graph": {
+            "area_name": graph.graph.get("dlm_area_name"),
+            "cache_key": graph.graph.get("dlm_cache_key"),
+            "network_type": graph.graph.get("dlm_network_type"),
+            "osmnx_version": graph.graph.get("dlm_osmnx_version"),
+        },
+        "information_model": information_model.value,
+        "instance": resolved.model_dump(mode="json"),
+        "scenario": scenario.model_dump(mode="json"),
+        "solver": result.solver,
+        "sustainability": SustainabilityAssumptions().model_dump(mode="json"),
+    }
 
 
 def resolve_instance(

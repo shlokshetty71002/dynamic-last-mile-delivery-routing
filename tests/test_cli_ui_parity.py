@@ -14,7 +14,7 @@ from dlm.disruption.schema import (
     scenario_from_geojson,
 )
 from dlm.instance.schema import DeliveryInstance
-from dlm.workflows import compare_delivery
+from dlm.workflows import compare_delivery, comparison_configuration
 
 
 def test_shared_workflow_is_byte_identical_for_both_clients(
@@ -36,6 +36,17 @@ def test_shared_workflow_is_byte_identical_for_both_clients(
     cli_result = compare_delivery(road_graph, delivery_instance, scenario)
     ui_result = compare_delivery(road_graph, delivery_instance, scenario)
     assert cli_result.model_dump_json() == ui_result.model_dump_json()
+    assert comparison_configuration(
+        road_graph,
+        delivery_instance,
+        scenario,
+        cli_result,
+    ) == comparison_configuration(
+        road_graph,
+        delivery_instance,
+        scenario,
+        ui_result,
+    )
 
 
 def test_drawn_scenario_yaml_replays_identically(

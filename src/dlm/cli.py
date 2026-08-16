@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Annotated
 
 import typer
+import yaml
 
 from dlm import __version__
 from dlm.config import configure_logging, get_settings
@@ -26,7 +27,12 @@ from dlm.viz import (
     save_map,
     saving_vs_stops_figure,
 )
-from dlm.workflows import compare_delivery, plan_delivery, resolve_instance
+from dlm.workflows import (
+    compare_delivery,
+    comparison_configuration,
+    plan_delivery,
+    resolve_instance,
+)
 
 app = typer.Typer(
     name="dlm",
@@ -280,6 +286,20 @@ def compare(
     output_dir.mkdir(parents=True, exist_ok=True)
     (output_dir / "result.json").write_text(
         json.dumps(result.model_dump(mode="json"), indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    (output_dir / "config.yaml").write_text(
+        yaml.safe_dump(
+            comparison_configuration(
+                graph,
+                instance,
+                scenario,
+                result,
+                information_model=information_model,
+            ),
+            sort_keys=True,
+            allow_unicode=True,
+        ),
         encoding="utf-8",
     )
     save_map(comparison_map(graph, instance, result, scenario), output_dir / "comparison.html")

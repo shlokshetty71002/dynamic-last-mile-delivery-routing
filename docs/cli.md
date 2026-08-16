@@ -64,7 +64,8 @@ file-based workflow rather than hidden UI-only scientific state.
 - `network` commands print JSON including cache status, time, counts, SCC, length, and speed
   provenance.
 - `plan` writes/prints complete time and distance breakdowns.
-- `compare` writes `result.json`, `comparison.html`, `comparison.png`, and `comparison.svg`.
+- `compare` writes replayable `config.yaml`, `result.json`, `comparison.html`,
+  `comparison.png`, and `comparison.svg`.
 - `batch` writes a tidy CSV plus `statistics.json`; `figures` writes PNG and SVG.
 - Validation problems exit non-zero with a readable message. Unreachable delivery service is a
   valid structured experiment outcome, not a process crash.

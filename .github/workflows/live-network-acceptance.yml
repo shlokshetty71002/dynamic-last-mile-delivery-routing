@@ -37,12 +37,16 @@ jobs:
           dlm network build --force | tee results/live-acceptance/network-build.json
           dlm network stats | tee results/live-acceptance/network-cache.json
 
-      - name: Run a real Dublin three-case comparison
+      - name: Run full-service and partial-service Dublin comparisons
         run: |
           dlm compare \
             --instance data/instances/small-n8.json \
+            --scenario scenarios/luas_cross_city_works.yaml \
+            --output-dir results/live-acceptance/full-service
+          dlm compare \
+            --instance data/instances/small-n8.json \
             --scenario scenarios/oconnell_march.yaml \
-            --output-dir results/live-acceptance/comparison
+            --output-dir results/live-acceptance/partial-stress
 
       - name: Validate acceptance evidence
         run: |
@@ -53,14 +57,19 @@ jobs:
           root = Path("results/live-acceptance")
           build = json.loads((root / "network-build.json").read_text())
           cached = json.loads((root / "network-cache.json").read_text())
-          result = json.loads((root / "comparison" / "result.json").read_text())
+          full = json.loads((root / "full-service" / "result.json").read_text())
+          stress = json.loads((root / "partial-stress" / "result.json").read_text())
           assert build["cache_hit"] is False
           assert cached["cache_hit"] is True
           assert cached["strongly_connected"] is True
           assert cached["nodes"] > 0 and cached["edges"] > 0
-          assert result["n_stops"] == 8
-          assert result["t1_s"] > 0
-          assert result["t2_s"] is None or result["t3_s"] <= result["t2_s"]
+          assert full["n_stops"] == 8 and full["status"] == "complete"
+          assert full["t1_s"] > 0 and full["t2_s"] > 0 and full["t3_s"] > 0
+          assert full["t3_s"] <= full["t2_s"]
+          assert stress["n_stops"] == 8
+          assert stress["status"] in {"complete", "partial", "infeasible"}
+          assert (root / "full-service" / "config.yaml").is_file()
+          assert (root / "partial-stress" / "config.yaml").is_file()
           PY
 
       - name: Upload evidence bundle

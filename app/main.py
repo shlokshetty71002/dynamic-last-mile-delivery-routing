@@ -10,6 +10,7 @@ from pathlib import Path
 
 import folium
 import streamlit as st
+import yaml
 from folium.plugins import Draw
 from streamlit_folium import st_folium
 
@@ -23,7 +24,7 @@ from dlm.instance.schema import DeliveryInstance, LocationSource
 from dlm.network.loader import build_or_load_network
 from dlm.simulation import InformationModel
 from dlm.viz import case_comparison_figure, comparison_map, instance_map
-from dlm.workflows import compare_delivery
+from dlm.workflows import compare_delivery, comparison_configuration
 
 st.set_page_config(page_title="Dublin Last-Mile Routing", layout="wide")
 st.title("Disruption-Aware Dublin Last-Mile Routing")
@@ -336,6 +337,20 @@ if result is not None and active_scenario is not None:
         archive.writestr(
             "result.json",
             json.dumps(result.model_dump(mode="json"), indent=2, sort_keys=True) + "\n",
+        )
+        archive.writestr(
+            "config.yaml",
+            yaml.safe_dump(
+                comparison_configuration(
+                    graph,
+                    active_instance,
+                    active_scenario,
+                    result,
+                    information_model=result.information_model,
+                ),
+                sort_keys=True,
+                allow_unicode=True,
+            ),
         )
         archive.writestr(f"{active_scenario.name}.yaml", active_scenario.to_yaml())
         archive.writestr(
