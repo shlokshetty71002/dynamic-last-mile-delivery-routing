@@ -1,0 +1,241 @@
+{
+  "created_at": "2026-08-16T00:00:00Z",
+  "depot": {
+    "demand": 0.0,
+    "id": "depot",
+    "label": "Dublin Port",
+    "lat": 53.3498,
+    "lon": -6.1953,
+    "node": null,
+    "service_time_s": 0.0,
+    "source": "preset",
+    "time_window": null
+  },
+  "fleet_size": 1,
+  "name": "medium-n20",
+  "schema_version": 1,
+  "seed": 42,
+  "stops": [
+    {
+      "demand": 1.0,
+      "id": "s1",
+      "label": "UCD Belfield",
+      "lat": 53.3067,
+      "lon": -6.2215,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s2",
+      "label": "Trinity College Dublin",
+      "lat": 53.3438,
+      "lon": -6.2546,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s3",
+      "label": "Mater Misericordiae University Hospital",
+      "lat": 53.3597,
+      "lon": -6.2675,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s4",
+      "label": "Heuston Station",
+      "lat": 53.3464,
+      "lon": -6.2927,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s5",
+      "label": "Dundrum Town Centre",
+      "lat": 53.2867,
+      "lon": -6.2417,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s6",
+      "label": "St Vincent's University Hospital",
+      "lat": 53.3181,
+      "lon": -6.2169,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s7",
+      "label": "Connolly Station",
+      "lat": 53.3511,
+      "lon": -6.2498,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s8",
+      "label": "O'Connell Street GPO",
+      "lat": 53.3493,
+      "lon": -6.2604,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s9",
+      "label": "Dublin City University",
+      "lat": 53.385,
+      "lon": -6.2565,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s10",
+      "label": "TU Dublin Grangegorman",
+      "lat": 53.3555,
+      "lon": -6.2798,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s11",
+      "label": "St James's Hospital",
+      "lat": 53.34,
+      "lon": -6.295,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s12",
+      "label": "Tallaght University Hospital",
+      "lat": 53.2918,
+      "lon": -6.3781,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s13",
+      "label": "Beaumont Hospital",
+      "lat": 53.3915,
+      "lon": -6.2236,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s14",
+      "label": "Temple Street Children's Hospital",
+      "lat": 53.3575,
+      "lon": -6.2624,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s15",
+      "label": "Grafton Street",
+      "lat": 53.3412,
+      "lon": -6.2602,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s16",
+      "label": "Henry Street",
+      "lat": 53.3491,
+      "lon": -6.2637,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s17",
+      "label": "Blanchardstown Centre",
+      "lat": 53.3932,
+      "lon": -6.3915,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s18",
+      "label": "Liffey Valley Shopping Centre",
+      "lat": 53.3521,
+      "lon": -6.393,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s19",
+      "label": "Dublin Airport Terminal 1",
+      "lat": 53.4273,
+      "lon": -6.2436,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    },
+    {
+      "demand": 1.0,
+      "id": "s20",
+      "label": "Bus\u00e1ras",
+      "lat": 53.3497,
+      "lon": -6.2519,
+      "node": null,
+      "service_time_s": 180.0,
+      "source": "preset",
+      "time_window": null
+    }
+  ],
+  "vehicle_capacity": null
+}

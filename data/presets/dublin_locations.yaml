@@ -1,0 +1,237 @@
+schema_version: 1
+coordinate_reference_system: EPSG:4326
+provenance: >
+  Recognisable Dublin landmarks compiled from OpenStreetMap place records. Coordinates are
+  WGS84 representative entrance/centroid points and are snapped to the selected driving graph
+  before routing. © OpenStreetMap contributors, ODbL 1.0.
+locations:
+  - name: UCD Belfield
+    lat: 53.3067
+    lon: -6.2215
+    category: university
+    source: OpenStreetMap contributors
+  - name: Trinity College Dublin
+    lat: 53.3438
+    lon: -6.2546
+    category: university
+    source: OpenStreetMap contributors
+  - name: Dublin City University
+    lat: 53.3850
+    lon: -6.2565
+    category: university
+    source: OpenStreetMap contributors
+  - name: TU Dublin Grangegorman
+    lat: 53.3555
+    lon: -6.2798
+    category: university
+    source: OpenStreetMap contributors
+  - name: St Vincent's University Hospital
+    lat: 53.3181
+    lon: -6.2169
+    category: hospital
+    source: OpenStreetMap contributors
+  - name: Mater Misericordiae University Hospital
+    lat: 53.3597
+    lon: -6.2675
+    category: hospital
+    source: OpenStreetMap contributors
+  - name: St James's Hospital
+    lat: 53.3400
+    lon: -6.2950
+    category: hospital
+    source: OpenStreetMap contributors
+  - name: Tallaght University Hospital
+    lat: 53.2918
+    lon: -6.3781
+    category: hospital
+    source: OpenStreetMap contributors
+  - name: Beaumont Hospital
+    lat: 53.3915
+    lon: -6.2236
+    category: hospital
+    source: OpenStreetMap contributors
+  - name: Temple Street Children's Hospital
+    lat: 53.3575
+    lon: -6.2624
+    category: hospital
+    source: OpenStreetMap contributors
+  - name: Grafton Street
+    lat: 53.3412
+    lon: -6.2602
+    category: retail
+    source: OpenStreetMap contributors
+  - name: Henry Street
+    lat: 53.3491
+    lon: -6.2637
+    category: retail
+    source: OpenStreetMap contributors
+  - name: Dundrum Town Centre
+    lat: 53.2867
+    lon: -6.2417
+    category: retail
+    source: OpenStreetMap contributors
+  - name: Blanchardstown Centre
+    lat: 53.3932
+    lon: -6.3915
+    category: retail
+    source: OpenStreetMap contributors
+  - name: Liffey Valley Shopping Centre
+    lat: 53.3521
+    lon: -6.3930
+    category: retail
+    source: OpenStreetMap contributors
+  - name: Dublin Airport Terminal 1
+    lat: 53.4273
+    lon: -6.2436
+    category: transport
+    source: OpenStreetMap contributors
+  - name: Heuston Station
+    lat: 53.3464
+    lon: -6.2927
+    category: transport
+    source: OpenStreetMap contributors
+  - name: Connolly Station
+    lat: 53.3511
+    lon: -6.2498
+    category: transport
+    source: OpenStreetMap contributors
+  - name: Busáras
+    lat: 53.3497
+    lon: -6.2519
+    category: transport
+    source: OpenStreetMap contributors
+  - name: Dublin Port
+    lat: 53.3498
+    lon: -6.1953
+    category: logistics
+    source: OpenStreetMap contributors
+  - name: Sandyford Industrial Estate
+    lat: 53.2765
+    lon: -6.2152
+    category: logistics
+    source: OpenStreetMap contributors
+  - name: Park West Business Park
+    lat: 53.3225
+    lon: -6.3710
+    category: logistics
+    source: OpenStreetMap contributors
+  - name: O'Connell Street GPO
+    lat: 53.3493
+    lon: -6.2604
+    category: landmark
+    source: OpenStreetMap contributors
+  - name: Dublin Castle
+    lat: 53.3429
+    lon: -6.2674
+    category: landmark
+    source: OpenStreetMap contributors
+  - name: Croke Park
+    lat: 53.3607
+    lon: -6.2511
+    category: landmark
+    source: OpenStreetMap contributors
+  - name: Aviva Stadium
+    lat: 53.3352
+    lon: -6.2285
+    category: landmark
+    source: OpenStreetMap contributors
+  - name: Phoenix Park Visitor Centre
+    lat: 53.3637
+    lon: -6.3298
+    category: landmark
+    source: OpenStreetMap contributors
+  - name: Rathmines Town Centre
+    lat: 53.3243
+    lon: -6.2654
+    category: suburb
+    source: OpenStreetMap contributors
+  - name: Swords Main Street
+    lat: 53.4597
+    lon: -6.2181
+    category: suburb
+    source: OpenStreetMap contributors
+  - name: Dún Laoghaire Harbour
+    lat: 53.2947
+    lon: -6.1339
+    category: suburb
+    source: OpenStreetMap contributors
+  - name: Blackrock Village
+    lat: 53.3018
+    lon: -6.1777
+    category: suburb
+    source: OpenStreetMap contributors
+  - name: Clontarf Seafront
+    lat: 53.3630
+    lon: -6.2010
+    category: suburb
+    source: OpenStreetMap contributors
+  - name: RDS Dublin
+    lat: 53.3272
+    lon: -6.2291
+    category: landmark
+    source: OpenStreetMap contributors
+  - name: Convention Centre Dublin
+    lat: 53.3478
+    lon: -6.2390
+    category: landmark
+    source: OpenStreetMap contributors
+  - name: Guinness Storehouse
+    lat: 53.3419
+    lon: -6.2867
+    category: landmark
+    source: OpenStreetMap contributors
+  - name: Kilmainham Gaol
+    lat: 53.3420
+    lon: -6.3102
+    category: landmark
+    source: OpenStreetMap contributors
+  - name: Dublin Zoo
+    lat: 53.3530
+    lon: -6.3030
+    category: landmark
+    source: OpenStreetMap contributors
+  - name: National Botanic Gardens
+    lat: 53.3729
+    lon: -6.2703
+    category: landmark
+    source: OpenStreetMap contributors
+  - name: Marlay Park
+    lat: 53.2775
+    lon: -6.2685
+    category: landmark
+    source: OpenStreetMap contributors
+  - name: Rathfarnham Castle
+    lat: 53.2983
+    lon: -6.2832
+    category: landmark
+    source: OpenStreetMap contributors
+  - name: IKEA Ballymun
+    lat: 53.4033
+    lon: -6.2764
+    category: retail
+    source: OpenStreetMap contributors
+  - name: Leopardstown Racecourse
+    lat: 53.2650
+    lon: -6.1954
+    category: landmark
+    source: OpenStreetMap contributors
+  - name: National Basketball Arena
+    lat: 53.2910
+    lon: -6.3520
+    category: landmark
+    source: OpenStreetMap contributors
+  - name: Howth Harbour
+    lat: 53.3888
+    lon: -6.0740
+    category: suburb
+    source: OpenStreetMap contributors
+  - name: Malahide Castle
+    lat: 53.4440
+    lon: -6.1640
+    category: landmark
+    source: OpenStreetMap contributors
+  - name: Castleknock Village
+    lat: 53.3748
+    lon: -6.3630
+    category: suburb
+    source: OpenStreetMap contributors

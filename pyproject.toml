@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dublin-last-mile"
+version = "1.0.0"
+description = "Disruption-aware last-mile delivery routing on Dublin's road network."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+authors = [
+  {name = "Shlok Shetty"},
+  {name = "Rushikesh Mane"},
+]
+dependencies = [
+  "folium>=0.20,<1",
+  "matplotlib>=3.10,<4",
+  "networkx>=3.4,<4",
+  "numpy>=1.26,<3",
+  "ortools>=9.14,<10",
+  "osmnx>=2.1.1,<2.2",
+  "pydantic>=2.10,<3",
+  "pydantic-settings>=2.7,<3",
+  "pyyaml>=6,<7",
+  "streamlit>=1.49,<2",
+  "streamlit-folium>=0.25,<1",
+  "typer>=0.15,<1",
+]
+
+[project.urls]
+Repository = "https://github.com/shlokshetty71002/dynamic-last-mile-delivery-routing"
+
+[project.optional-dependencies]
+dev = [
+  "pre-commit>=4,<5",
+  "pytest>=8,<10",
+  "ruff>=0.9,<1",
+]
+
+[project.scripts]
+dlm = "dlm.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/dlm"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-config --strict-markers"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["data/cache", "results"]
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "UP"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"

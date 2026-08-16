@@ -1,0 +1,24 @@
+schema_version: 1
+name: luas_cross_city_works
+description: >-
+  Partial-access roadworks scenario around College Green and Lower Grafton Street, represented
+  as a slow corridor rather than a complete closure. Not a live traffic notice.
+source: >-
+  Academic scenario inspired by recurring Luas maintenance notices; spatial encoding uses
+  OpenStreetMap coordinates. See docs/data.md.
+created: 2026-08-16
+disruptions:
+  - id: tram-works
+    type: corridor_closure
+    severity: partial
+    edge_ids: []
+    node_ids: []
+    street: null
+    geometry:
+      - [-6.2600, 53.3443]
+      - [-6.2590, 53.3433]
+      - [-6.2594, 53.3416]
+    factor: 3.0
+    buffer_m: 35.0
+    start_s: null
+    end_s: null
