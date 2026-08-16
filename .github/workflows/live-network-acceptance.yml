@@ -1,0 +1,72 @@
+name: Live M50 network acceptance
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  real-network:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      MPLCONFIGDIR: data/cache/matplotlib
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install pinned environment
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip install --no-deps -e .
+
+      - name: Build and reload the real M50 graph
+        run: |
+          mkdir -p results/live-acceptance
+          dlm network build --force | tee results/live-acceptance/network-build.json
+          dlm network stats | tee results/live-acceptance/network-cache.json
+
+      - name: Run a real Dublin three-case comparison
+        run: |
+          dlm compare \
+            --instance data/instances/small-n8.json \
+            --scenario scenarios/oconnell_march.yaml \
+            --output-dir results/live-acceptance/comparison
+
+      - name: Validate acceptance evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("results/live-acceptance")
+          build = json.loads((root / "network-build.json").read_text())
+          cached = json.loads((root / "network-cache.json").read_text())
+          result = json.loads((root / "comparison" / "result.json").read_text())
+          assert build["cache_hit"] is False
+          assert cached["cache_hit"] is True
+          assert cached["strongly_connected"] is True
+          assert cached["nodes"] > 0 and cached["edges"] > 0
+          assert result["n_stops"] == 8
+          assert result["t1_s"] > 0
+          assert result["t2_s"] is None or result["t3_s"] <= result["t2_s"]
+          PY
+
+      - name: Upload evidence bundle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-m50-acceptance
+          path: |
+            results/live-acceptance/**
+            data/cache/*.json
+          if-no-files-found: warn
+          retention-days: 30
