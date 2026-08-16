@@ -1,0 +1,26 @@
+schema_version: 1
+name: st_patricks_parade
+description: >-
+  Demonstration corridor following a representative central Dublin St Patrick's Day parade
+  route from Parnell Square toward Dame Street. Not a live traffic notice.
+source: >-
+  Inspired by publicly announced St Patrick's Festival parade routes; spatial encoding uses
+  OpenStreetMap coordinates. See docs/data.md.
+created: 2026-08-16
+disruptions:
+  - id: parade-route
+    type: corridor_closure
+    severity: full
+    edge_ids: []
+    node_ids: []
+    street: null
+    geometry:
+      - [-6.2632, 53.3538]
+      - [-6.2606, 53.3498]
+      - [-6.2587, 53.3472]
+      - [-6.2606, 53.3442]
+      - [-6.2667, 53.3430]
+    factor: 2.0
+    buffer_m: 55.0
+    start_s: null
+    end_s: null

@@ -1,0 +1,26 @@
+schema_version: 1
+name: quays_bridge_closure
+description: >-
+  Full closure demonstration around O'Connell Bridge and the adjoining north/south quays.
+  Not a live traffic notice.
+source: >-
+  Hand-encoded from OpenStreetMap coordinates as a reproducible bridge-closure stress test;
+  see docs/data.md.
+created: 2026-08-16
+disruptions:
+  - id: bridge-area
+    type: polygon_closure
+    severity: full
+    edge_ids: []
+    node_ids: []
+    street: null
+    geometry:
+      - [-6.2607, 53.3477]
+      - [-6.2578, 53.3477]
+      - [-6.2578, 53.3463]
+      - [-6.2607, 53.3463]
+      - [-6.2607, 53.3477]
+    factor: 2.0
+    buffer_m: 35.0
+    start_s: null
+    end_s: null

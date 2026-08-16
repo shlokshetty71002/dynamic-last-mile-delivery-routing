@@ -1,0 +1,38 @@
+schema_version: 1
+name: oconnell_march
+description: >-
+  Reproducible demonstration of a protest corridor from the GPO along O'Connell Street and
+  across O'Connell Bridge. This is a modelling scenario, not a live traffic notice.
+source: >-
+  Hand-encoded from the public Dublin street layout using OpenStreetMap coordinates; see
+  docs/data.md for provenance and limitations.
+created: 2026-08-16
+disruptions:
+  - id: march-corridor
+    type: corridor_closure
+    severity: full
+    street: O'Connell Street
+    geometry:
+      - [-6.2620, 53.3525]
+      - [-6.2604, 53.3493]
+      - [-6.2587, 53.3472]
+    factor: 2.0
+    buffer_m: 45.0
+    start_s: null
+    end_s: null
+  - id: crowd-spillover
+    type: slow_zone
+    severity: full
+    edge_ids: []
+    node_ids: []
+    street: null
+    geometry:
+      - [-6.2640, 53.3530]
+      - [-6.2570, 53.3530]
+      - [-6.2570, 53.3465]
+      - [-6.2640, 53.3465]
+      - [-6.2640, 53.3530]
+    factor: 2.5
+    buffer_m: 35.0
+    start_s: null
+    end_s: null

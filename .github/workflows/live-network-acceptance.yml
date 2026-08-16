@@ -1,0 +1,124 @@
+name: Live M50 network acceptance
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  real-network:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      MPLCONFIGDIR: data/cache/matplotlib
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install pinned environment
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip install --no-deps -e .
+
+      - name: Build and reload the real M50 graph
+        run: |
+          mkdir -p results/live-acceptance
+          dlm network build --force | tee results/live-acceptance/network-build.json
+          dlm network stats | tee results/live-acceptance/network-cache.json
+
+      - name: Run full-service and partial-service Dublin comparisons
+        run: |
+          dlm compare \
+            --instance data/instances/small-n8.json \
+            --scenario scenarios/luas_cross_city_works.yaml \
+            --output-dir results/live-acceptance/full-service
+          dlm compare \
+            --instance data/instances/small-n8.json \
+            --scenario scenarios/oconnell_march.yaml \
+            --output-dir results/live-acceptance/partial-stress
+
+      - name: Select a feasible positive-saving Dublin demonstration
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          from dlm.config import get_settings
+          from dlm.instance.schema import DeliveryInstance
+          from dlm.network.loader import build_or_load_network
+          from dlm.workflows import find_feasible_saving_demo
+
+          settings = get_settings()
+          graph = build_or_load_network(cache_dir=settings.resolved_cache_dir).graph
+          instance = DeliveryInstance.load("data/instances/small-n8.json")
+          selected = find_feasible_saving_demo(
+              graph,
+              instance,
+              matrix_cache_dir=settings.resolved_cache_dir,
+          )
+          payload = {
+              "candidates_evaluated": selected.candidates_evaluated,
+              "scenario": selected.scenario.model_dump(mode="json"),
+              "result": selected.result.model_dump(mode="json"),
+          }
+          output = Path("results/live-acceptance/feasible-saving-demo.json")
+          output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+          assert payload["result"]["status"] == "complete"
+          assert payload["result"]["t2_s"] > payload["result"]["t3_s"]
+          assert payload["result"]["saving_percent"] > 0
+          print(json.dumps({
+              "candidates_evaluated": payload["candidates_evaluated"],
+              "scenario_name": payload["scenario"]["name"],
+              "saving_percent": payload["result"]["saving_percent"],
+              "t2_s": payload["result"]["t2_s"],
+              "t3_s": payload["result"]["t3_s"],
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Validate acceptance evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("results/live-acceptance")
+          build = json.loads((root / "network-build.json").read_text())
+          cached = json.loads((root / "network-cache.json").read_text())
+          full = json.loads((root / "full-service" / "result.json").read_text())
+          stress = json.loads((root / "partial-stress" / "result.json").read_text())
+          demo = json.loads((root / "feasible-saving-demo.json").read_text())
+          assert build["cache_hit"] is False
+          assert cached["cache_hit"] is True
+          assert cached["elapsed_seconds"] < 5.0
+          assert cached["strongly_connected"] is True
+          assert cached["nodes"] > 0 and cached["edges"] > 0
+          assert full["n_stops"] == 8 and full["status"] == "complete"
+          assert full["t1_s"] > 0 and full["t2_s"] > 0 and full["t3_s"] > 0
+          assert full["t3_s"] <= full["t2_s"]
+          assert stress["n_stops"] == 8
+          assert stress["status"] in {"complete", "partial", "infeasible"}
+          assert demo["result"]["status"] == "complete"
+          assert demo["result"]["t2_s"] > demo["result"]["t3_s"]
+          assert demo["result"]["saving_percent"] > 0
+          assert (root / "full-service" / "config.yaml").is_file()
+          assert (root / "partial-stress" / "config.yaml").is_file()
+          PY
+
+      - name: Upload evidence bundle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-m50-acceptance
+          path: |
+            results/live-acceptance/**
+            data/cache/*.json
+          if-no-files-found: warn
+          retention-days: 30
