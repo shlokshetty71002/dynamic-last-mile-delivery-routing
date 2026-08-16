@@ -140,6 +140,11 @@ CI runs it on Python 3.11 and 3.12. Real OSM acquisition is intentionally a manu
 Actions acceptance workflow because ordinary CI must remain deterministic and independent of
 third-party network availability.
 
+The verified 2026-08-16 live run built a strongly connected M50-catchment graph with 39,983 nodes
+and 87,448 directed edges, then reloaded its validated cache in 1.194 seconds. It completed the
+N=8 full-service comparison and retained a separate partial-service stress case instead of hiding
+infeasibility. See [GitHub Actions run 31960850268](https://github.com/shlokshetty71002/dynamic-last-mile-delivery-routing/actions/runs/31960850268).
+
 ## Repository map
 
 - `src/dlm/` — network, instance, solver, disruption, simulation, visualisation, and workflows.

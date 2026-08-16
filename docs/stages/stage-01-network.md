@@ -48,13 +48,24 @@ dlm network build --force
 - ✅ Excessive/sea-like snap distance raises typed `SnapDistanceError` with metres in the message.
 - ✅ Manual GitHub workflow builds fresh OSM, reloads cache, asserts non-empty SCC, and uploads
   network statistics as an evidence artifact.
-- 🟨 Current-node counts and a human map-tool route comparison are snapshot-specific and must be
-  transcribed from that live acceptance run, not invented by deterministic fixture tests.
+- ✅ Current node/edge counts, speed provenance, and reload time below are transcribed from the
+  live acceptance artifact rather than invented by deterministic fixture tests.
+- 🟨 A final human route comparison with a separate map tool remains a submission review task;
+  third-party route results are traffic/profile dependent and are not asserted by CI.
 
 ## Results / evidence
 
-The final local suite passes all network tests without network access. `.github/workflows/
-live-network-acceptance.yml` is the auditable external-data gate; cache metadata records UTC access.
+The final local suite passes all network tests without network access. The verified live M50 run
+on 2026-08-16 produced 39,983 nodes, 87,448 directed edges, 8,751,668.604 m of directed edge
+length, and a strongly connected graph. Explicit OSM speeds covered 88.191% of edges; the
+documented policy imputed 11.809%. Fresh acquisition/annotation/cache creation took 67.396 s on
+the GitHub runner, and validated sidecar reload took 1.194 s. The N=8 full-service case completed;
+the O'Connell stress case correctly returned a structured partial result (2 served, 6 missed)
+after removing 8 edges and slowing 77. Evidence and maps are in
+[live M50 acceptance run 31960850268](https://github.com/shlokshetty71002/dynamic-last-mile-delivery-routing/actions/runs/31960850268).
+
+`.github/workflows/live-network-acceptance.yml` is the auditable, manually dispatched
+external-data gate; cache metadata records UTC access.
 
 ## Known limitations
 

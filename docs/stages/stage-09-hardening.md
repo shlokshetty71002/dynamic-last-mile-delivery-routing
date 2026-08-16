@@ -40,7 +40,7 @@ git diff --check
 ## Acceptance criteria
 
 - ✅ End-to-end tests build instance→matrix→plan→disrupt→execute→replan→metrics.
-- ✅ 59-test suite, Ruff, format, and `pip check` pass locally.
+- ✅ 60-test suite, Ruff, format, and `pip check` pass locally.
 - ✅ CLI covers network, locations, scenarios, planning, comparison, batch, and figures.
 - ✅ Canonical files regenerate deterministically; no absolute paths/secrets are committed.
 - ✅ CI tests Python 3.11/3.12; live external evidence is a separate manual workflow.
@@ -48,7 +48,11 @@ git diff --check
 ## Results / evidence
 
 Final local gate on 2026-08-16: 60 passed; all Ruff checks passed; 73 Python files formatted;
-dependency integrity passed. Remote workflow links belong on the draft PR after publication.
+dependency integrity passed. Remote CI run
+[31960851952](https://github.com/shlokshetty71002/dynamic-last-mile-delivery-routing/actions/runs/31960851952)
+passed the complete gate on Python 3.11 and 3.12. The separate live M50 run
+[31960850268](https://github.com/shlokshetty71002/dynamic-last-mile-delivery-routing/actions/runs/31960850268)
+passed its real-network assertions and uploaded the replay bundle.
 
 ## Known limitations
 

@@ -15,6 +15,8 @@ and uses semantic versioning for release identifiers.
 
 - Added the complete Typer CLI, pinned Python 3.11/3.12 lock, CI matrix, manual live M50
   acceptance workflow, `make reproduce`, portable canonical instances, and user/run guides.
+- Verified 60 deterministic tests on both supported Python versions and a live 39,983-node,
+  87,448-edge M50-catchment graph.
 
 ### Stage 8 — Fleet and benchmark
 
@@ -55,6 +57,7 @@ and uses semantic versioning for release identifiers.
 
 - Added explicit M50-catchment OSMnx acquisition, directed SCC extraction, hashed GraphML cache,
   safe snapping, versioned speed imputation, and travel-time provenance statistics.
+- Added a validated fast local sidecar with automatic recovery from the portable GraphML cache.
 
 ### Stage 0 — Foundations
 
