@@ -19,7 +19,7 @@ facts: source, inputs, seeds, assumptions, and commands are committed so evidenc
 ## Reproduction order
 
 1. `make setup` creates and installs the pinned environment.
-2. `make ci` runs static checks, 59 deterministic tests, and dependency integrity checks.
+2. `make ci` runs static checks, 60 deterministic tests, and dependency integrity checks.
 3. `dlm network build` downloads the real Dublin graph once and writes a hashed cache.
 4. `make experiment` executes 204 deterministic real-network cases.
 5. `make figures` derives the report figure from the tidy CSV.

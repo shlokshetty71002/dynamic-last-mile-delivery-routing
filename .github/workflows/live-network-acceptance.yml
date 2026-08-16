@@ -61,6 +61,7 @@ jobs:
           stress = json.loads((root / "partial-stress" / "result.json").read_text())
           assert build["cache_hit"] is False
           assert cached["cache_hit"] is True
+          assert cached["elapsed_seconds"] < 5.0
           assert cached["strongly_connected"] is True
           assert cached["nodes"] > 0 and cached["edges"] > 0
           assert full["n_stops"] == 8 and full["status"] == "complete"

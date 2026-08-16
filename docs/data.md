@@ -10,9 +10,14 @@ OSMnx returns a directed `MultiDiGraph`, and the loader retains the largest stro
 component before annotating travel time.
 
 The GraphML filename is a SHA-256-derived key over every construction input, OSMnx version, cache
-schema, and speed table. Adjacent JSON metadata records UTC access time, versions, bbox, and graph
-statistics. OSM is a living database: deleting the cache and rebuilding later can legitimately
-change counts or paths. Preserve a run's metadata when exact historical reproduction matters.
+schema, and speed table. It remains the portable source of truth. A project-generated pickle
+sidecar with the same key makes repeated local loads fast; its graph type, key, and strong
+connectivity are validated, and a corrupt or incompatible sidecar is automatically rebuilt from
+GraphML. Pickle files can execute code while loading, so only this application's own local cache
+is trusted—never place an untrusted pickle in `data/cache`. Adjacent JSON metadata records UTC
+access time, versions, bbox, and graph statistics. OSM is a living database: deleting the cache
+and rebuilding later can legitimately change counts or paths. Preserve a run's metadata when
+exact historical reproduction matters.
 
 Road data and map tiles are © OpenStreetMap contributors, licensed under the Open Data Commons
 Open Database License. Attribution requirements and legal terms are on the

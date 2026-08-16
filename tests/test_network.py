@@ -154,7 +154,7 @@ def test_cache_key_covers_area_version_and_speed_policy() -> None:
 
 
 def test_network_build_extracts_strong_component_and_reuses_cache(tmp_path) -> None:
-    """The first build writes GraphML and the second run loads it without downloading."""
+    """The first build writes both caches and the second run avoids downloading."""
 
     calls = 0
 
@@ -189,6 +189,29 @@ def test_network_build_extracts_strong_component_and_reuses_cache(tmp_path) -> N
     assert second.stats.imputed_speed_edges == 5
     assert first.cache_path.exists()
     assert first.cache_path.with_suffix(".json").exists()
+    assert first.cache_path.with_suffix(".pickle").exists()
+
+
+def test_corrupt_binary_cache_falls_back_to_graphml(tmp_path) -> None:
+    """A damaged fast sidecar is replaced from the portable validated GraphML cache."""
+
+    calls = 0
+
+    def downloader(_: NetworkSpec) -> nx.MultiDiGraph:
+        nonlocal calls
+        calls += 1
+        return _fixture_graph()
+
+    first = build_or_load_network(cache_dir=tmp_path, downloader=downloader)
+    binary_path = first.cache_path.with_suffix(".pickle")
+    binary_path.write_bytes(b"not a pickle")
+
+    second = build_or_load_network(cache_dir=tmp_path, downloader=downloader)
+
+    assert calls == 1
+    assert second.cache_hit is True
+    assert second.stats.strongly_connected is True
+    assert binary_path.read_bytes() != b"not a pickle"
 
 
 def test_directed_graph_does_not_invent_reverse_one_way_edge() -> None:

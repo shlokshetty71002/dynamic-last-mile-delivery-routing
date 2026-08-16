@@ -8,14 +8,15 @@ from a reproducible cache on later commands.
 ## Scope
 
 In scope: OSMnx drive download, explicit bbox/place option, largest strong component, versioned
-speed imputation, travel seconds, GraphML/metadata cache, safe snapping, and network CLI. Stop
-selection and all-pairs matrices arrive in Stages 2–3.
+speed imputation, travel seconds, GraphML/metadata cache, validated fast local sidecar, safe
+snapping, and network CLI. Stop selection and all-pairs matrices arrive in Stages 2–3.
 
 ## Design
 
 `NetworkSpec` is the complete cache input. OSMnx `drive` preserves one-way direction; only the
-largest SCC is retained. The key includes OSMnx version and the full YAML speed policy. Saving the
-graph atomically prevents half-written caches. The accepted area/depot policy is
+largest SCC is retained. The key includes OSMnx version and the full YAML speed policy. GraphML
+is the portable source of truth; a validated project-generated binary sidecar accelerates reloads,
+and both are written atomically. The accepted area/depot policy is
 [ADR-0002](../adr/ADR-0002-study-area-and-depot.md).
 
 ## Interfaces

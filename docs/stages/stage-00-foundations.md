@@ -47,7 +47,7 @@ Windows equivalents are in [the PowerShell guide](../WINDOWS_RUN_AND_GIT_GUIDE.m
 
 ## Results / evidence
 
-Local final gate on 2026-08-16: 59 tests passed; Ruff check passed; 73 Python files were already
+Local final gate on 2026-08-16: 60 tests passed; Ruff check passed; 73 Python files were already
 formatted; `pip check` reported no broken requirements. Remote run links are recorded on the PR.
 
 ## Known limitations

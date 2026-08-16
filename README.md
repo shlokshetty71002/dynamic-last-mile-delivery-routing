@@ -40,7 +40,7 @@ flowchart TD
 ## Quickstart
 
 Prerequisites: Git and 64-bit Python 3.11 or 3.12. The first real-network command downloads
-OpenStreetMap data; later runs use the hashed GraphML cache.
+OpenStreetMap data; later runs use a validated fast sidecar backed by the hashed GraphML cache.
 
 ### Windows PowerShell
 
@@ -134,7 +134,7 @@ rounded from the [SEAI conversion factor](https://www.seai.ie/data-and-insights/
 | 9 | Full CLI, deterministic outputs, reproduction target | ✅ |
 | 10 | Barebones Streamlit/Folium thin client and parity tests | ✅ |
 
-The deterministic suite contains 59 tests across graph handling, dynamic instance sizes,
+The deterministic suite contains 60 tests across graph handling, dynamic instance sizes,
 incremental matrices, solvers, disruptions, execution, batch statistics, and CLI/UI parity.
 CI runs it on Python 3.11 and 3.12. Real OSM acquisition is intentionally a manual GitHub
 Actions acceptance workflow because ordinary CI must remain deterministic and independent of

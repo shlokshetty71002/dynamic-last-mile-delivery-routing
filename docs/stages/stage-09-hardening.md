@@ -47,7 +47,7 @@ git diff --check
 
 ## Results / evidence
 
-Final local gate on 2026-08-16: 59 passed; all Ruff checks passed; 73 Python files formatted;
+Final local gate on 2026-08-16: 60 passed; all Ruff checks passed; 73 Python files formatted;
 dependency integrity passed. Remote workflow links belong on the draft PR after publication.
 
 ## Known limitations

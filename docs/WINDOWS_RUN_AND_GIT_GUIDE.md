@@ -52,7 +52,7 @@ that first rather than running later commands.
 .\.venv\Scripts\dlm.exe --help
 ```
 
-Expected local gate: 59 tests pass, Ruff reports all checks passed and all files formatted, and
+Expected local gate: 60 tests pass, Ruff reports all checks passed and all files formatted, and
 pip reports no broken requirements.
 
 ## 5. Build the Dublin graph and run the app

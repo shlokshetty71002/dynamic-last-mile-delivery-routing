@@ -6,6 +6,7 @@ import hashlib
 import json
 import logging
 import os
+import pickle
 import time
 from collections.abc import Callable
 from dataclasses import asdict, dataclass
@@ -142,14 +143,15 @@ def build_or_load_network(
     speed_defaults: SpeedDefaults | None = None,
     downloader: Callable[[NetworkSpec], nx.MultiDiGraph] | None = None,
 ) -> NetworkBuildResult:
-    """Build the directed M50 graph once, then load the same GraphML cache thereafter.
+    """Build the directed M50 graph once, then load its validated cache thereafter.
 
     Parameters
     ----------
     spec
         Network request. The explicit M50 catchment specification is the default.
     cache_dir
-        Directory for GraphML and JSON metadata. Project settings are used when omitted.
+        Directory for GraphML, a fast local binary sidecar, and JSON metadata. Project settings
+        are used when omitted.
     force_rebuild
         Ignore an existing matching cache and download again.
     speed_defaults
@@ -170,13 +172,11 @@ def build_or_load_network(
     directory.mkdir(parents=True, exist_ok=True)
     key = cache_key(active_spec, speed_defaults=active_defaults)
     graph_path = directory / f"{key}.graphml"
+    binary_path = directory / f"{key}.pickle"
     metadata_path = directory / f"{key}.json"
 
     if graph_path.exists() and not force_rebuild:
-        graph = ox.io.load_graphml(graph_path)
-        stats = network_stats(graph)
-        if not stats.strongly_connected:
-            raise NetworkBuildError(f"Cached graph is not strongly connected: {graph_path}")
+        graph, stats = _load_cached_graph(graph_path, binary_path, key)
         return NetworkBuildResult(
             graph=graph,
             cache_path=graph_path,
@@ -212,8 +212,10 @@ def build_or_load_network(
         }
     )
     _save_graph_atomically(graph, graph_path)
+    _save_binary_atomically(graph, binary_path)
     metadata = {
         "accessed_at_utc": datetime.now(UTC).isoformat(),
+        "binary_file": binary_path.name,
         "cache_key": key,
         "cache_schema_version": CACHE_SCHEMA_VERSION,
         "graph_file": graph_path.name,
@@ -299,3 +301,73 @@ def _save_graph_atomically(graph: nx.MultiDiGraph, destination: Path) -> None:
     temporary = destination.with_suffix(".tmp.graphml")
     ox.io.save_graphml(graph, temporary)
     os.replace(temporary, destination)
+
+
+def _load_cached_graph(
+    graph_path: Path,
+    binary_path: Path,
+    expected_key: str,
+) -> tuple[nx.MultiDiGraph, NetworkStats]:
+    """Load a trusted local binary sidecar, falling back to portable GraphML.
+
+    The sidecar is an optimisation generated only by this loader. A missing, corrupt, stale, or
+    incompatible sidecar is never fatal: GraphML is loaded, validated, and used to replace it.
+    Users must not copy untrusted pickle files into the cache directory.
+    """
+
+    if binary_path.exists():
+        try:
+            with binary_path.open("rb") as handle:
+                graph = pickle.load(handle)  # noqa: S301 - trusted, project-generated cache only
+            stats = _validate_cached_graph(graph, binary_path, expected_key)
+            return graph, stats
+        except (
+            AttributeError,
+            EOFError,
+            ImportError,
+            IndexError,
+            NetworkBuildError,
+            OSError,
+            pickle.PickleError,
+            TypeError,
+            ValueError,
+        ) as exc:
+            LOGGER.warning(
+                "Fast graph cache could not be used; rebuilding it from GraphML: %s",
+                binary_path,
+                exc_info=exc,
+            )
+
+    graph = ox.io.load_graphml(graph_path)
+    stats = _validate_cached_graph(graph, graph_path, expected_key)
+    _save_binary_atomically(graph, binary_path)
+    return graph, stats
+
+
+def _validate_cached_graph(
+    graph: object,
+    source: Path,
+    expected_key: str,
+) -> NetworkStats:
+    """Reject a cache whose type, identity, or directed connectivity is invalid."""
+
+    if not isinstance(graph, nx.MultiDiGraph):
+        raise NetworkBuildError(f"Cached graph has an unexpected type: {source}")
+    if graph.graph.get("dlm_cache_key") != expected_key:
+        raise NetworkBuildError(f"Cached graph key does not match its request: {source}")
+    stats = network_stats(graph)
+    if not stats.strongly_connected:
+        raise NetworkBuildError(f"Cached graph is not strongly connected: {source}")
+    return stats
+
+
+def _save_binary_atomically(graph: nx.MultiDiGraph, destination: Path) -> None:
+    """Write a fast local graph sidecar atomically; GraphML remains authoritative."""
+
+    temporary = destination.with_suffix(".tmp.pickle")
+    try:
+        with temporary.open("wb") as handle:
+            pickle.dump(graph, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        os.replace(temporary, destination)
+    finally:
+        temporary.unlink(missing_ok=True)
