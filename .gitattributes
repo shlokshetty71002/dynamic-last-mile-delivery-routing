@@ -1,0 +1,20 @@
+* text=auto
+
+# Keep source and reproducibility files identical across Windows, macOS, and Linux.
+*.py text eol=lf
+*.toml text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.csv text eol=lf
+*.svg text eol=lf
+Makefile text eol=lf
+
+# Never apply text conversion to binary deliverables.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.zip binary
